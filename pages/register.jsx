@@ -1,15 +1,37 @@
 import { useState } from 'react';
 import { LayoutAccount } from '../components';
 import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
-import { Button, Card, Form, Input } from 'antd';
-import { useRouter } from 'next/router'
+import { Button, Card, Form, Input, message } from 'antd';
+import { useRouter } from 'next/router';
+
+import axios from './api/axios';
 
 const Register = () => {
   const router = useRouter()
   const [loadingSubmit, setLoadingSubmit] = useState(false);
+  const REGISTER_URL = '/auth/local/register';
 
-  const onFinish = (values) => {
-    console.log('Received values of form: ', values);
+  const onFinish = async (values) => {
+    try {
+      setLoadingSubmit(true)
+      const response = await axios.post(
+        REGISTER_URL,
+				values,
+				{ headers: { 'Content-Type': 'application/json' } }
+      );
+      setLoadingSubmit(false)
+      message.success('Register success');
+      router.push('/login')
+      // if (response) {
+      // }
+		} catch (err) {
+      setLoadingSubmit(false)
+			if (!err?.response) {
+        return message.error('No server response');
+			}
+      const messageErr = err.response?.data.error.message
+      message.error(messageErr);
+		}
   };
 
   return (
