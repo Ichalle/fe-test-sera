@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { LayoutAccount } from '../components';
-import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
+import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { Button, Card, Form, Input, message } from 'antd';
 import { useRouter } from 'next/router';
 

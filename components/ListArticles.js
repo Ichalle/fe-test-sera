@@ -1,18 +1,38 @@
 import React from 'react';
-import { Table, Pagination, Button } from 'antd';
+import { Table, Pagination, Button, Popconfirm, message } from 'antd';
 import moment from 'moment';
 
-const Actions = ({data}) => {
+const Actions = ({data, onSelectList, onDelete, onEdit}) => {
+  function confirm () {
+    onDelete(data.id)
+  }
   return (
     <div>
-      <Button className='mx-1' onClick={() => console.log(data, 'detail,,,')}>Detail</Button>
-      <Button className='mx-1'>Edit</Button>
-      <Button className='mx-1' danger>Delete</Button>
+      <Button className='mx-1' onClick={() => onSelectList(data)}>Detail</Button>
+      <Button className='mx-1' onClick={() => onEdit(data)}>Edit</Button>
+      <Popconfirm
+        title="Are you sure to delete this article?"
+        onConfirm={confirm}
+        okText="Yes"
+        cancelText="No"
+      >
+        <Button className='mx-1' danger>Delete</Button>
+      </Popconfirm>
     </div>
   )
 }
 
-function ListArticles ({ data, page, total, onChangePagination, loading }) {
+function ListArticles ({
+  data,
+  page,
+  total,
+  onChangePagination,
+  loading,
+  onSelectList,
+  reFetch,
+  onDelete,
+  onEdit
+}) {
   const columns = [
     {
       title: 'ID',
@@ -39,7 +59,14 @@ function ListArticles ({ data, page, total, onChangePagination, loading }) {
     },
     {
       title: 'Action',
-      render: (a) => <Actions data={a} />
+      render: (a) =>
+        <Actions
+          data={a}
+          onSelectList={onSelectList}
+          reFetch={reFetch}
+          onDelete={onDelete}
+          onEdit={onEdit}
+        />
     }
   ]
 
