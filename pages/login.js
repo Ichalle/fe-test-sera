@@ -19,6 +19,7 @@ const Login = () => {
 				values,
 				{ headers: { 'Content-Type': 'application/json' } }
       );
+      localStorage.setItem('user', JSON.stringify(response?.data));
       setLoadingSubmit(false)
       message.success('Login success');
       router.push('/')
